@@ -1,0 +1,6 @@
+--dir=$HOME/.dotfiles 
+--target=$HOME
+
+--dotfiles
+
+--ignore='\.git*'
