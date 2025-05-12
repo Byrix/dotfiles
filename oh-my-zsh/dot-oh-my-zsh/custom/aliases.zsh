@@ -1,0 +1,7 @@
+alias please='sudo'
+alias src='source ~/.zshrc'
+alias c='clear'
+alias pvpn='sudo protonvpn'
+alias update='eos-update --yay'
+alias cnap='conda activate ./.env'
+alias n='conda activate ./.env && nvim'
