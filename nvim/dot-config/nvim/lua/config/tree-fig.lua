@@ -1,0 +1,28 @@
+-- local parser = vim.treesitter.get_parser(0)
+-- local tree = parser:parse()[1]
+-- local root = tree:root()
+--
+-- -- Capture the inline node 
+-- local query = vim.treesitter.query.parse_query('markdown_inline', [[
+--   (inline) @inline_node
+-- ]])
+--
+-- for _,match in ipairs(query:matches(root)) do
+--   local inline_node = match[1]
+--
+--   local start_row, start_col, end_row, end_col = inline_node:range()
+--
+--   local line = vim.fn.getline(start_row+1)  -- VIM is 1-indexed 
+--   local inline_content = line:sub(start_col + 1, end_col)
+--
+--   local sub_start, sub_end = inline_content:find("transport")
+--
+--   while sub_start do
+--     local hl_start_col = start_col + sub_start-1
+--     local hl_end_col = start_col + sub_end -1
+--
+--     vim.api.nvim_bug_add_highlight(0, -1, 'TSCite', start_row, hl_start_col, hl_end_col)
+--
+--     sub_start, sub_end = inline_content:find("transport", sub_end+1)
+--   end
+-- end
