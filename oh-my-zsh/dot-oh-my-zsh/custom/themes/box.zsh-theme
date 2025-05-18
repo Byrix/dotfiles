@@ -34,6 +34,12 @@ p_dirty() {
 }
 
 function thm_precmd() {
+  if [[ $? -gt 0 ]]; then
+    LINECOL="%F{red}"
+  else 
+    LINECOL="%F{blue}"
+  fi
+
   vcs_info
 
   local pyenv="$(p_pyenv)"
