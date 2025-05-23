@@ -13,3 +13,11 @@ function cnde() {
     conda deactivate 
   done
 }
+
+unalias md
+function md() {
+  mkdir -p "$1"
+  [[ $? -ne 0 ]] && return $?
+
+  cd $1
+}
