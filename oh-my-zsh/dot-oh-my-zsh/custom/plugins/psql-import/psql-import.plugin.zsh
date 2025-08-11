@@ -1,3 +1,8 @@
+# Load .env file 
+# Expects:
+#   - USER=database username
+#   - PASSWORD=database password
+#   - OGR_PATH=path to ogr2ogr
 set -a 
 source ${0:a:h}/.env 
 set +a
