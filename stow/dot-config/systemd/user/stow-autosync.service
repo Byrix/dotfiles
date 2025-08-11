@@ -1,0 +1,10 @@
+[Unit]
+Description=Autosync the Stow directory with remote Git repo 
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/byrix/.dotfiles/_admin/autosync.zsh 
+
+[Install]
+WantedBy=default.target
