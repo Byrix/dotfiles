@@ -11,6 +11,7 @@ return {
         desc = '[p]rojects',
       },
     },
+    branch='pre_release',
     config = function()
       -- Save localoptions to session file
       vim.opt.sessionoptions:append 'localoptions'
