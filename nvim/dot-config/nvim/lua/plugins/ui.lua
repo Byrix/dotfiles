@@ -435,7 +435,7 @@ return {
         overlay = '#494d64',
         teal = '#8bd5ca',
         maroon = '#ee99a0',
-        surface0 = '#363a4f'
+        overlay0 = '#6e738d'
       }
       local VIMODE_COLOURS = {
         ['n'] = 'blue',
@@ -531,7 +531,11 @@ return {
           ::continue::
         end
 
-        return table.concat(clients, ':')
+        if #clients>0 then
+          return table.concat(clients, '')
+        else
+          return "No LSP"
+        end
       end
 
       local function git_branch()
@@ -616,7 +620,7 @@ return {
                 newfile = ICONS.files.newfile,
               },
               color = get_colour(COLOURS.red),
-              padding = { left=1, right=0 },
+              padding = { left=0, right=0 },
             },
           },
           lualine_c = {
