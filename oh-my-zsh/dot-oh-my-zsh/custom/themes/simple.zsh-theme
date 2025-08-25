@@ -31,7 +31,7 @@ PROMPT=" ${current_dir}${git_branch}${conda_prompt}${venv_prompt}
  %B$(user_host)${user_symbol}%b%{$reset_color%F{white}%} "
 RPROMPT="%B${return_code}%b"
 
-ZSH_THEME_GIT_PROMPT_PREFIX=" on %{$fg[yellow]%}git:"
+ZSH_THEME_GIT_PROMPT_PREFIX=" on %{$fg[yellow]%} "
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 
 ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX=" with %{$fg[green]%}"
