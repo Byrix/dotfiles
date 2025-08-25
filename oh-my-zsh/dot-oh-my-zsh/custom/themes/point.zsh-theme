@@ -129,6 +129,7 @@ prompt_precmd() {
   PROMPT="%E
 $pmt$seg%{%f%}
 %{%K{blue}%F{black}%}$(p_status) %{%k%F{blue}%}$SEGMENT_SEPERATOR%{$reset_color%} "
+  RPROMPT=""
   CURRENT_BG=''
 }
 

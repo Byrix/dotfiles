@@ -7,7 +7,7 @@ export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
 export ZSH="$HOME/.oh-my-zsh"
 
 # OMZ theme
-ZSH_THEME="box"
+ZSH_THEME="simple"
 
 # === OPTIONS ===
 ENABLE_CORRECTION="true"  # Command correction prompts
@@ -21,33 +21,34 @@ COMPLETION_WAITING_DOTS="true"  # Awaiting completion dots
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
-plugins=(sudo dirhistory conda conda-env command-not-found alias-finder history lol man pip postgres python pylint ssh-agent wd psql-import)
+# Built-in plugins 
+plugins=(sudo dirhistory conda conda-env command-not-found alias-finder man pip ssh-agent wd tmux)
+# Custom plugins 
+plugins+=(psql-import)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_AU.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
-export EDITOR='nvim'
-
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='nano'
+else
+  export EDITOR='nvim'
+fi
 
 # CUSTOM FROM HERE ON
-# Add PATH info
 export PATH="$PATH:/home/byrix/.local/bin"
 
-# CONDA INIT 
+# === plugin settings ===========================
+# --- alias-finder ----------
+zstyle ':omz:plugins:alias-finder' autoload yes
+zstyle ':omz:plugins:alias-finder' cheaper yes
+
+# === app inits =================================
+# --- conda init -------------
 # Manually copied from changes to .bashrc made by running conda init
 # Not complete changes
 __conda_setup="$('/home/byrix/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -61,9 +62,10 @@ else
     fi
 fi
 unset __conda_setup
+# TODO: Why did I add the below line???
+# export PATH="$PATH:/home/byrix/miniconda3/bin"
 
-export PATH="$PATH:/home/byrix/miniconda3/bin"
-# SSH agent autostart
+# --- SSH agent autostart --------
 #if ! pgrep -u "$USER" ssh-agent > /dev/null; then
 #    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
 #fi
@@ -71,13 +73,37 @@ export PATH="$PATH:/home/byrix/miniconda3/bin"
 #    source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
 #fi
 
-# pnpm
+# --- pnpm init ---------------
 export PNPM_HOME="/home/byrix/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
 
+# --- tmux init -------------
+# function rsc() {
+#   CLIENTID="$1-$(date +%S)"
+#   tmux new-session -d -t $1 -s $CLIENTID \; set-option destroy-unattached \; attach-session -t $CLIENTID
+# }
+# if [[ "$(systemctl --user is-active tmux.service)"!="active" ]]; then
+#   systemctl --user start tmux.service
+#   # [[ -n $TMUX ]] || echo "Starting"
+#   # [[ -n $TMUX ]] || rsc byrix
+# fi
+
+# tmux attach-session -d -t byrix > /dev/null 2>&1
+# rsc byrix
+
+# function mksc() {
+#   tmux new-session -d -s $1
+#   rsc $1
+# }
+
+# --- PSQL connection defaults -------
+export PGHOST='psql.seanbrooker.com'
+# export PGSSLMODE='verify-full'
+
+# --- ??? ------------------
 autoload -U zmv
 autoload catch always
+
