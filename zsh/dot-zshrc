@@ -22,7 +22,7 @@ COMPLETION_WAITING_DOTS="true"  # Awaiting completion dots
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Built-in plugins 
-plugins=(sudo dirhistory conda conda-env command-not-found alias-finder man pip ssh-agent wd tmux)
+plugins=(sudo dirhistory conda conda-env command-not-found alias-finder man pip ssh-agent wd tmux git)
 # Custom plugins 
 plugins+=(psql-import)
 
