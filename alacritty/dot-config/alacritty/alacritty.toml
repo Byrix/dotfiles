@@ -81,14 +81,14 @@ shape = "Underline"
 [font]
 size = 6
 [font.normal]
-    family = "NotoMono Nerd Font"
+    family = "NotoSansM Nerd Font"
     style = 'Regular'
 [font.bold]
-    family = "NotoMono Nerd Font"
+    family = "NotoSansM Nerd Font"
     style = 'Bold'
 [font.italic]
-    family = "NotoMono Nerd Font"
-    style = 'Italic'
+    family = "NotoSansM Nerd Font"
+    style = 'Condensed Regular'
 
 [window]
 dynamic_padding = true

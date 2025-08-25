@@ -3,3 +3,5 @@
 [user]
 	email = Byrix99@pm.me
 	name = Byrix
+[url "git@github.com:"]
+	insteadOf = https://github.com/
