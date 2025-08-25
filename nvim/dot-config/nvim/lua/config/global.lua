@@ -80,7 +80,7 @@ local i = math.random(#animals)
 vim.opt.statusline = '%{%g:currentmode[mode()]%} %{%reg_recording()%} %* %t | %y | %* %= c:%c l:%l/%L %p%% %#NonText# ' .. animals[i] .. ' %*'
 
 -- hide cmdline when not used
-vim.opt.cmdheight = 1
+vim.opt.cmdheight = 0
 
 -- split right and below by default
 vim.opt.splitright = true

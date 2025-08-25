@@ -7,8 +7,7 @@ return {
       { 'nvim-telescope/telescope-ui-select.nvim' },
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       { 'nvim-telescope/telescope-dap.nvim' },
-      {
-        'byrix/telezot.nvim',
+      { 'byrix/telezot.nvim',
         enabled = true,
         dev = false,
         dependencies = {
@@ -138,41 +137,6 @@ return {
     },
     cmd = 'Oil',
   },
-
-  { -- statusline
-    -- PERF: I found this to slow down the editor
-    'nvim-lualine/lualine.nvim',
-    enabled = false,
-    config = function()
-      local function macro_recording()
-        local reg = vim.fn.reg_recording()
-        if reg == '' then
-          return ''
-        end
-        return '📷[' .. reg .. ']'
-      end
-
-      ---@diagnostic disable-next-line: undefined-field
-      require('lualine').setup {
-        options = {
-          section_separators = '',
-          component_separators = '',
-          globalstatus = true,
-        },
-        sections = {
-          lualine_a = { 'mode', macro_recording },
-          lualine_b = { 'branch', 'diff', 'diagnostics' },
-          -- lualine_b = {},
-          lualine_c = { 'searchcount' },
-          lualine_x = { 'filetype' },
-          lualine_y = { 'progress' },
-          lualine_z = { 'location' },
-        },
-        extensions = { 'nvim-tree' },
-      }
-    end,
-  },
-
   { -- nicer-looking tabs with close icons
     'nanozuki/tabby.nvim',
     enabled = false,
@@ -198,7 +162,6 @@ return {
     "NStefan002/screenkey.nvim",
     lazy = false,
   },
-
   { -- filetree
     'nvim-tree/nvim-tree.lua',
     enabled = true,
@@ -455,29 +418,10 @@ return {
     end,
   },
   {
-    'feline-nvim/feline.nvim',
-    enabled=true,
-    dependencies = {
-      'lewis6991/gitsigns.nvim'
-    },
+    'nvim-lualine/lualine.nvim',
+    enabled = true,
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      local VIMODE_COLOURS = {
-        ['NORMAL'] = 'blue',
-        ['COMMAND'] = 'blue',
-        ['INSERT'] = 'green',
-        ['REPLACE'] = 'red',
-        ['LINES'] = 'mauve',
-        ['VISUAL'] = 'mauve',
-        ['OP'] = 'yellow',
-        ['BLOCK'] = 'yellow',
-        ['V-REPLACE'] = 'yellow',
-        ['ENTER'] = 'yellow',
-        ['SELECT'] = 'yellow',
-        ['MORE'] = 'yellow',
-        ['SHELL'] = 'yellow',
-        ['TERM'] = 'yellow',
-        ['NONE'] = 'yellow',
-      }
       local COLOURS = {
         fg = '#cad3f5',
         bg = '#24273a',
@@ -491,47 +435,93 @@ return {
         overlay = '#494d64',
         teal = '#8bd5ca',
         maroon = '#ee99a0',
+        surface0 = '#363a4f'
+      }
+      local VIMODE_COLOURS = {
+        ['n'] = 'blue',
+        ['c'] = 'blue',
+        ['i'] = 'green',
+        ['R'] = 'red',
+        ['v'] = 'mauve',
+        ['V'] = 'mauve',
       }
       local ICONS = {
         files = {
-          read_only = '',
+          read_only = ' ',
+          modified = '󰏫 ',
+          unnamed = '[?]',
+          newfile = ' ',
+        },
+        format = {
+          unix = '',
+          dos = '',
+          mac = '',
         },
         git = {
-          branch = '',
-          diff_add = '',
-          diff_mod = '',
-          diff_rm = '',
-          ignored = '',
+          branch = ' ',
+          diff_add = ' ',
+          diff_mod = ' ',
+          diff_rm = ' ',
+          ignored = ' ',
         },
         lsp = {
-          main = '',
-          err = '',
-          warn = '',
-          info = '',
+          main = ' ',
+          err = ' ',
+          warn = ' ',
+          info = ' ',
+        },
+        loc = {
+          buffer = ' ',
+          location = ' ',
         },
       }
 
-      function tableContains(table, value)
-        for i= 1,#table do
+      -- Utils 
+      local function tableContains(table, value)
+        for i=1,#table do
           if (table[i]==value) then
             return true
           end
         end
         return false
       end
-
-      -- Custom providers 
-      function prov_time()
-        return tostring(os.date("%H:%M"))
+      local function sep()
+        return {
+          function()
+            return "|"
+          end,
+          color = { fg=COLOURS.overlay, bg='NONE', gui='bold' },
+          padding = { left=1, right=1 }
+        }
+      end
+      local function diagnostic_colour(level, colour)
+        local count = #vim.diagnostic.get(0, { severity = level })
+        return { fg=(count==0) and COLOURS.green or colour, bg='none', gui='bold' }
+      end
+      local function vi_colour()
+        local mode = vim.fn.mode():sub(1,1)
+        local colour
+        if tableContains(VIMODE_COLOURS, mode) then
+          colour=VIMODE_COLOURS[mode]
+        else
+          colour=COLOURS.green
+        end
+        return { fg=colour, bg='none', gui='bold' }
+      end
+      local function get_colour(colour)
+        return { fg=colour, bg='none', gui='bold' }
       end
 
-      function lsp_client()
+      -- Providers 
+      local function lsp_client()
         local buff_id = vim.api.nvim_get_current_buf()
         local clients = {}
+        local active_clients = vim.lsp.get_clients({ bufnr=buff_id })
 
-        for _, client in pairs(vim.lsp.get_clients({ bufnr=buff_id })) do
+        for _,client in ipairs(active_clients) do
           local cname = client.name
           if tableContains(clients, cname) then
+            -- clients[#clients+1] = 'E' .. cname
             goto continue
           elseif cname=='null-ls' then
             goto continue
@@ -541,202 +531,186 @@ return {
           ::continue::
         end
 
-        return table.concat(clients, ' ')
+        return table.concat(clients, ':')
       end
 
-      function prov_fileinfo(components, opts)
-        local fileinf = require('feline.providers.file').file_info(components, opts)
-        local git_ignored = false 
-
-        if git_ignored then
-          ignored_str = opts.file_ignored_icon or ICONS.git.ignored 
-          fileinf = fileinf .. ' ' .. ignored_str
-        end
-
-        return fileinf
-      end
-
-      -- Utils 
-      function sep(colour, side, direction, bg, show, icon)
-        bg = bg or "bg"
-        show = show or false
-        icon = icon or nil
-        local seperator = {}
-
-        if direction=='up' then
-          direction='_2'
+      local function git_branch()
+        local gitsigns = vim.b.gitsigns_head
+        local fugitive = vim.fn.exists("*FugitiveHead")==1 and vim.fn.FugitiveHead() or ""
+        local branch = gitsigns or fugitive
+        if branch == nil or branch=="" then
+          return ICONS.git.branch
         else
-          direction=''
+          return ICONS.git.branch .. branch
         end
-
-
-        if side=='left' then
-          table.insert(seperator, { str='slant_'..side..direction, hl={bg=bg, fg=colour}, always_visible=show })
-          table.insert(seperator, { str=' ', hl={bg=colour, fg='NONE'} })
-          if icon~=nil then
-            table.insert(seperator, { str=icon, hl={bg=colour, fg='bg'} })
-          end
-        elseif side=='right' then
-          if icon~=nil then
-            table.insert(seperator, { str=icon, hl={bg=colour, fg='bg'} })
-          end
-          table.insert(seperator, { str=' ', hl={bg=colour, fg='NONE'} })
-          table.insert(seperator, { str='slant_'..side..direction, hl={bg=bg, fg=colour}, always_visible=show })
-        else
-          table.insert(seperator, { str=' ', hl={bg=colour, fg='NONE'} })
-        end
-
-        return seperator
       end
 
-      local comps = {
-        vimode = {
-          name = 'vi_mode',
-          provider = {
-            name = 'vi_mode',
-            opts = {
-              show_mode_name = true,
-              padding = 'center',
-            }
-          },
-          hl = function()
-            vi_mode = require('feline.providers.vi_mode')
-            return {
-              -- name = vi_mode.get_mode_highlight_name(),
-              bg = vi_mode.get_mode_color(),
-              style = 'bold',
-              fg = 'bg'
-            }
-          end,
-          right_sep = 'slant_right',
-          icon = '',
-        },
-        seperator = {
-          provider = ''
-        },
-        cursor = {
-          name = 'cursor',
-          provider = {
-            name = 'position',
-            opts = { padding = false },
-          },
-          hl = { bg='overlay', fg='fg', },
-          left_sep = sep('overlay', 'left'),
-          right_sep = sep('overlay', 'right', 'up')
-        },
-        file_name = {
-          name = 'file_name',
-          provider = {
-            name = 'file_info',
-            opts = {
-              type = 'relative',
-              file_modified_icon = ICONS.git.diff_mod,
-              file_readonly_icon = ICONS.files.read_only,
-            }
-          },
-          hl = { bg='overlay', fg='fg' },
-          right_sep = sep('overlay', 'right'),
-          left_sep = sep('overlay', 'left'),
-        },
-        git_branch = {
-          name = 'git_branch',
-          provider = 'git_branch',
-          hl = { bg='flamingo', fg='bg' },
-          left_sep = sep('flamingo', 'left', 'up', 'bg', true),
-          right_sep = sep('flamingo')
-        },
-        git_add = {
-          name = 'git_added',
-          provider = 'git_diff_added',
-          hl = { bg = 'teal', fg = 'bg' },
-          left_sep = sep('teal', 'left', 'up', 'flamingo', true),
-          right_sep = sep('teal'),
-          icon = ICONS.git.diff_add .. ' ',
-        },
-        git_mod = {
-          name = 'git_modified',
-          provider = 'git_diff_changed',
-          hl = { bg = 'yellow', fg = 'bg' },
-          left_sep = sep('yellow', 'left', 'up', 'teal', true),
-          right_sep = sep('yellow'),
-          icon = ICONS.git.diff_mod .. ' ',
-        },
-        git_rm = {
-          name = 'git_removed',
-          provider = 'git_diff_removed',
-          hl = { bg = 'maroon', fg = 'bg' },
-          left_sep = sep('maroon', 'left', 'up', 'yellow', true),
-          right_sep = sep('maroon', 'right', 'down', 'bg', true),
-          icon = ICONS.git.diff_rm .. ' ',
-        },
-        lsp_name = {
-          name = 'lsp_client',
-          provider = lsp_client,
-          hl = { bg='flamingo', fg='bg' },
-          right_sep = sep('flamingo', 'right', 'up', 'bg', true, ' ' .. ICONS.lsp.main),
-          left_sep = sep('flamingo'),
-        },
-        lsp_info = {
-          name = 'lsp_diagnositc_info',
-          provider = 'diagnostic_info',
-          hl = { bg='teal', fg='bg' },
-          left_sep = sep('teal'),
-          right_sep = sep('teal', 'right', 'up', 'flamingo', true, ' ' .. ICONS.lsp.info),
-          icon = '',
-        },
-        lsp_warn = {
-          name = 'lsp_diagnositc_warn',
-          provider = 'diagnostic_warnings',
-          hl = { bg='yellow', fg='bg' },
-          left_sep = sep('yellow'),
-          right_sep = sep('yellow', 'right', 'up', 'teal', true, ' ' .. ICONS.lsp.warn),
-          icon = '',
-        },
-        lsp_err = {
-          name = 'lsp_diagnositc_err',
-          provider = 'diagnostic_errors',
-          hl = { bg='maroon', fg='bg' },
-          left_sep = sep('maroon', 'left', 'down', 'bg', true),
-          right_sep = sep('maroon', 'right', 'up', 'yellow', true, ' ' .. ICONS.lsp.err),
-          icon = '',
-        },
-        sys_time = {
-          name = 'time',
-          provider = prov_time,
-          hl = { bg='overlay', fg='fg' },
-          left_sep = sep('overlay', 'left'),
-          right_sep = sep('overlay'),
-        },
-        word_count = {},
-      }
+      local function file_size()
+        local size = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
+        if size<0 then
+          return '-'
+        else
+          if size < 1024 then
+            return size..'B'
+          elseif size < math.pow(1024, 2) then
+            return string.format("%.1fK", size/1024)
+          elseif size < math.pow(1024, 3) then
+            return string.format("%.1fM", size/math.pow(1024,2))
+          else
+            return string.format("%.1G", size/math.pow(1024,3))
+          end
+        end
+      end
 
-      require('feline').setup({
-        theme = COLOURS,
-        vi_mode_colors = VIMODE_COLOURS,
-        components = {
-          active = {
-            { -- left
-              comps.vimode,
-              comps.git_branch,
-              comps.git_add,
-              comps.git_mod,
-              comps.git_rm,
-              -- comps.seperator,
-            },
-            { -- center
-              comps.file_name,
-              -- comps.seperator,
-            },
-            { -- right 
-              comps.lsp_err,
-              comps.lsp_warn,
-              comps.lsp_info,
-              comps.lsp_name,
-              comps.cursor,
-              comps.sys_time
+      local function prov_buffer()
+        local bufnr_list = vim.fn.getbufinfo({ buflisted = 1 })
+        local total = #bufnr_list
+        local current_bufnr = vim.api.nvim_get_current_buf()
+        local current_index = 0
+
+        for i,buf in ipairs(bufnr_list) do
+          if buf.bufnr == current_bufnr then
+            current_index = i
+            break
+          end
+        end
+
+        return string.format(ICONS.loc.buffer .. ' %d/%d', current_index, total)
+      end
+
+      require('lualine').setup({
+        options = {
+          section_separators = '',
+          component_separators = '',
+          globalstatus = true,
+        },
+        sections = {
+          lualine_a = {
+            {
+              'mode',
+              -- fmt = function(str)
+              --   return str:sub(1,1)
+              -- end,
+              color = vi_colour(),
+              padding = { left=1, right=0 }
             }
           },
-          inactive = {},
+          lualine_b = {
+            sep(),
+            {
+              'filetype',
+              icon_only = true,
+              colored = false,
+              color = get_colour(COLOURS.red),
+              padding = { left=0, right=0 },
+            },
+            {
+              'filename',
+              file_status = true,
+              path = 0,
+              shorting_target = 20,
+              symbols = {
+                modified = ICONS.files.modified,
+                readonly = ICONS.files.read_only,
+                unnamed = '[?]',
+                newfile = ICONS.files.newfile,
+              },
+              color = get_colour(COLOURS.red),
+              padding = { left=1, right=0 },
+            },
+          },
+          lualine_c = {
+            sep(),
+            {
+              git_branch,
+              color = get_colour(COLOURS.blue),
+              padding = { left=0, right=0 },
+            },
+            {
+              'diff',
+              colored = true,
+              diff_color = {
+                added = { fg=COLOURS.teal, bg='none', gui='none' },
+                modified = { fg=COLOURS.yellow, bg='none', gui='none' },
+                removed = { fg=COLOURS.red, bg='none', gui='none' },
+              },
+              symbols = {
+                added=ICONS.git.diff_add,
+                modified=ICONS.git.diff_mod,
+                removed=ICONS.git.diff_rm,
+              },
+              source = nil,
+              padding = { left=2, right=0 },
+            }
+          },
+          lualine_x = {
+            {
+              'diagnostics',
+              sources = { 'nvim_diagnostic', 'coc' },
+              sections = { 'error', 'warn', 'info' },
+              diagnostics_color = {
+                error = { fg=COLOURS.red, bg='none', gui='none' },
+                warn = { fg=COLOURS.yellow, bg='none', gui='none' },
+                info = { fg=COLOURS.teal, bg='none', gui='none' },
+              },
+              symbols = {
+                error = ICONS.lsp.err,
+                warn = ICONS.lsp.warn,
+                info = ICONS.lsp.info,
+              },
+              colored = true,
+              update_in_insert = true,
+              padding = { left=0, right=0 },
+            },
+            {
+              lsp_client,
+              color = get_colour(COLOURS.blue),
+              padding = { left=2, right=0 },
+            },
+          },
+          lualine_y = {
+            -- {
+            --   'fileformat',
+            --   color = get_colour(COLOURS.yellow),
+            --   symbols = {
+            --     unix=ICONS.format.unix,
+            --     dos=ICONS.format.dos,
+            --     mac=ICONS.format.mac,
+            --   },
+            --   padding = { left=0, right=0 },
+            -- },
+            -- {
+            --   'encoding',
+            --   color = get_colour(COLOURS.yellow),
+            --   padding = { left=1, right=0 },
+            -- },
+            sep(),
+            {
+              file_size,
+              color = get_colour(COLOURS.red),
+              padding = { left=0, right=0 },
+            },
+          },
+          lualine_z = {
+            sep(),
+            {
+              prov_buffer,
+              color = get_colour(COLOURS.green),
+              padding = { left=0, right=0 },
+            },
+            {
+              'progress',
+              icon = ICONS.loc.location,
+              icons_enabled = true,
+              color = get_colour(COLOURS.green),
+              padding = { left=2, right=0 },
+            },
+            {
+              'location',
+              color = get_colour(COLOURS.green),
+              padding = { left=1, right=0 }
+            },
+          },
         }
       })
     end,
