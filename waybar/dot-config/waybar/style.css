@@ -1,0 +1,119 @@
+@import "themes/catppuccin-mocha.css";
+
+@keyframes blink {
+  0% {
+    background-color: @surface0
+  }
+  50% {
+    background-color: @base;
+  }
+  100% {
+    background-color: @suface0;
+  }
+}
+
+* {
+  font-family: 'NotoSans Nerd Font', Roboto, Helveica, Arial, sans-serif;
+  font-size: 14px;
+  min-height: 0;
+}
+
+#waybar {
+  background: @mantle;
+  color: @text;
+  margin: 5px 5px;
+}
+
+#workspaces {
+  border-radius: 1rem;
+  margin: 5px;
+  background-color: @surface0;
+  margin-left: 1rem;
+}
+#workspaces button {
+  color: @peach;
+  padding: 0.4rem;
+  border-radius: 0;
+}
+#workspaces button:first-child {
+  border-radius: 1rem 0 0 1rem;
+}
+#workspaces button:last-child {
+  border-radius: 0 1rem 1rem 0;
+}
+#workspaces button:hover:not(.active) {
+  background-color: @surface1;
+}
+#workspaces .active {
+  color: @mantle;
+  background: @peach;
+}
+#workspaces .urgent {
+  animation: blink 3s linear infinite;
+}
+
+#custom-music,
+#tray,
+#clock,
+#window,
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#custom-sep,
+#custom-lock,
+#custom-reboot,
+#custom-power {
+  font-weight: bold;
+}
+#clock {
+  color: @green;
+  margin-right: 1rem;
+}
+#pulseaudio {
+  color: @red;
+}
+#custom-music {
+  color: @blue;
+}
+#window {
+  color: @red;
+}
+#custom-sep {
+  color: @overlay0;
+  margin: 0 1rem;
+}
+#network {
+  color: @red;
+  margin-right: 1rem;
+}
+
+#cpu,#memory { color: @blue; }
+#cpu { margin-right: 1em; }
+
+#group-power {
+  border-radius: 1rem;
+  margin: 5px;
+  margin-left: 0.7rem;
+  margin-right: 0;
+  color: @green;
+}
+#custom-power, #custom-reboot, #custom-lock {
+  padding: 0.4rem;
+}
+#custom-power:hover, #custom-lock:hover, #custom-reboot:hover {
+  background: @surface0;
+}
+#custom-power:hover {
+  border-radius: 1rem 0 0 1rem;
+}
+#custom-lock {
+  margin-right: 0;
+}
+#custom-lock:hover {
+  border-radius: 0 1rem 1rem 0;
+}
+
+#custom-pacman, #systemd-failed-units {
+  color: @yellow;
+}

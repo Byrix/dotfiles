@@ -1,0 +1,104 @@
+{
+  "layer": "bottom",
+  "position": "top",
+  "modules-left": ["group/group-power", "custom/sep", "hyprland/window", "custom/sep", "custom/music", "custom/sep", "custom/pacman", "systemd-failed-units"],
+  "modules-center": ["hyprland/workspaces"],
+  "modules-right": ["tray", "custom/sep", "cpu", "memory", "custom/sep", "network", "pulseaudio", "custom/sep", "clock"],
+
+  "hyprland/workspaces": {
+    "on-scroll-up": "hyprctl dispatch workspace r-1",
+    "on-scroll-down": "hyprctl dispatch workspace r+1",
+    "on-click": "activate",
+    "active-only": false,
+    "all-outputs": true,
+    "format": "{icon}",
+    "format-icons": {
+      "home": "",
+      "media": "",
+      "misc": "",
+      "default": ""
+    }
+  },
+  "custom/music": {
+    "format": "  {}",
+    "escape": true,
+    "interval": 5,
+    "tooltip": false,
+    "exec": "playerctl metadata --format='{{ title }} — {{ artist }}'",
+    "on-click": "playerctl play-pause",
+    "on-scroll-up": "playerctl previous",
+    "on-scroll-down": "playerctl next",
+    "max-length": 50
+  },
+  "clock": {
+    "timezone": "Australia/Melbourne",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "  {:%d/%m/%Y}",
+    "format": "  {:%H:%M}"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {
+        "default": ["", "", " "]
+    },
+    "on-click": "pavucontrol"
+  },
+  "custom/sep": {
+    "tooltip": false,
+    "format": "|"
+  },
+  "network": {
+    "format": "  {bandwidthDownBytes}",
+    "format-disconnect": "󰖪  disconnected"
+  },
+  "cpu": {
+    "format": " {usage}%"
+  },
+  "memory": {
+    "format": " {}%"
+  },
+  "group/group-power": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 500,
+      "children-class": "group-power-child"
+    },
+    "modules": ["custom/power", "custom/reboot", "custom/lock"]
+  },
+  "custom/power": {
+    "tooltip": false,
+    "format": "",
+    "on-click": "shutdown now"
+  },
+  "custom/reboot": {
+    "tooltip": false,
+    "format": ""
+  },
+  "custom/lock": {
+    "tooltip": false,
+    "format": "",
+    "on-click": "hyprlock"
+  },
+  "custom/sep-group": {
+    "tooltip": false,
+    "format": "      "
+  },
+  "custom/pacman": {
+    "format": "󰮯 {}",
+    "interval": 3600,
+    "exec": "checkupdates | wc -l",
+    "exec-if": "exit 0",
+    "onclick": "alacritty -e 'sudo pacman -Syu'; pkill -SIGRTMIN+8 waybar",
+    "signal": 8
+  },
+  "systemd-failed-units": {
+    "format": " {nr_failed_system}/{nr_failed_user}",
+    "format-ok": " {nr_failed_system}/{nr_failed_user}",
+    "hide_on_ok": false
+  },
+  "tray": {
+    "icon-size": 16,
+    "spacing": 10
+  }
+}
