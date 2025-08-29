@@ -51,19 +51,20 @@ zstyle ':omz:plugins:alias-finder' cheaper yes
 # --- conda init -------------
 # Manually copied from changes to .bashrc made by running conda init
 # Not complete changes
-__conda_setup="$('/home/byrix/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+conda_path="/opt/miniconda3"
+__conda_setup="$("$conda_path/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/byrix/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/byrix/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "$conda_path/etc/profile.d/conda.sh" ]; then
+        . "$conda_path/etc/profile.d/conda.sh"
     else
-        export PATH="$PATH:/home/byrix/miniconda3/bin"
+        export PATH="$PATH:$conda_path/bin"
     fi
 fi
 unset __conda_setup
 # TODO: Why did I add the below line???
-# export PATH="$PATH:/home/byrix/miniconda3/bin"
+# export PATH="$PATH:$conda_path/bin"
 
 # --- SSH agent autostart --------
 #if ! pgrep -u "$USER" ssh-agent > /dev/null; then
