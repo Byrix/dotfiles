@@ -37,7 +37,7 @@ function psqlimport() {
     return
   fi
 
-  local conn="host=localhost dbname=$db user=$USER password=$PASSWORD"
+  local conn="host=$PGHOST dbname=$db user=$USER password=$PASSWORD"
   local ogr=$OGR_PATH/ogr2ogr
   for f in ./$file/**/*.shp; do
     echo "\n$f"
