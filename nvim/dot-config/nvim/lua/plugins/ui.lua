@@ -532,7 +532,7 @@ return {
         end
 
         if #clients>0 then
-          return table.concat(clients, '')
+          return table.concat(clients, ', ')
         else
           return "No LSP"
         end
