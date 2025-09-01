@@ -1,0 +1,10 @@
+# === ALACRITTY DEVICE SETTINGS =================
+# Device-specific config for Alacritty, one per device, import from main `/alacritty.toml` file
+
+[general]
+  # Import desired theme
+  import = [ './themes/catppuccin-macchiato.toml' ]
+
+[font]
+  # Font size
+  size = 6
