@@ -1,0 +1,2 @@
+libappindicator-gtk3
+gnome-shell-extension-appindicator
