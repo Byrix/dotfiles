@@ -1,0 +1,28 @@
+{
+  "close-on-lost-focus": true,
+  "show-keybinds": true,
+  "css": "./style.css",
+  "buttons": [
+    {
+      "label": "shutdown",
+      "action": "systemctl poweroff",
+      "text": "Shutdown",
+      "keybind": "s",
+      "icon": "./icons/shutdown.svg"
+    },
+    {
+      "label": "reboot",
+      "action": "systemctl reboot",
+      "text": "Reboot",
+      "keybind": "r",
+      "icon": "./icons/reboot.svg"
+    },
+    {
+      "label": "lock",
+      "action": "hyprlock",
+      "text": "Lock",
+      "keybind": "l",
+      "icon": "./icons/lock.svg"
+    }
+  ]
+}
