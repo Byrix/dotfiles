@@ -2,13 +2,41 @@
 
 @keyframes blink {
   0% {
-    background-color: @surface0
+    background-color: @surface0;
   }
+
   50% {
     background-color: @base;
   }
+
   100% {
     background-color: @suface0;
+  }
+}
+@keyframes batteryWarning {
+  0% {
+    background-color: @yellow;
+  }
+
+  50% {
+    background-color: @mantle;
+  }
+
+  100% {
+    background-color: @yellow;
+  }
+}
+@keyframes batteryUrgent {
+  0% {
+    background-color: @red;
+  }
+
+  50% {
+    background-color: @mantle;
+  }
+
+  100% {
+    background-color: @red;
   }
 }
 
@@ -16,6 +44,7 @@
   font-family: 'NotoSans Nerd Font', Roboto, Helveica, Arial, sans-serif;
   font-size: 14px;
   min-height: 0;
+  font-weight: bold;
 }
 
 #waybar {
@@ -24,6 +53,8 @@
   margin: 5px 5px;
 }
 
+/* === HYPR MODULES ============================= */
+/* --- Workspaces ----------- */
 #workspaces {
   border-radius: 1rem;
   margin: 5px;
@@ -31,7 +62,7 @@
   margin-left: 1rem;
 }
 #workspaces button {
-  color: @peach;
+  color: @mauve;
   padding: 0.4rem;
   border-radius: 0;
 }
@@ -46,26 +77,23 @@
 }
 #workspaces .active {
   color: @mantle;
-  background: @peach;
+  background: @mauve;
 }
 #workspaces .urgent {
   animation: blink 3s linear infinite;
 }
-
-#custom-music,
-#tray,
-#clock,
-#window,
-#pulseaudio,
-#network,
-#cpu,
-#memory,
-#custom-sep,
-#custom-lock,
-#custom-reboot,
-#custom-power {
-  font-weight: bold;
+/* --- Window --------------- */
+#window {
+  color: @red;
 }
+
+/* === UTILS ==================================== */
+#custom-sep {
+  color: @overlay0;
+  margin: 0 1rem;
+}
+
+/* === SYSTEM MODULES =========================== */
 #clock {
   color: @green;
   margin-right: 1rem;
@@ -73,47 +101,52 @@
 #pulseaudio {
   color: @red;
 }
-#custom-music {
-  color: @blue;
-}
-#window {
-  color: @red;
-}
-#custom-sep {
-  color: @overlay0;
-  margin: 0 1rem;
+#cpu {
+  margin-right: 1em;
 }
 #network {
   color: @red;
   margin-right: 1rem;
 }
-
-#cpu,#memory { color: @blue; }
-#cpu { margin-right: 1em; }
-
-#group-power {
-  border-radius: 1rem;
-  margin: 5px;
-  margin-left: 0.7rem;
-  margin-right: 0;
+#cpu,
+#memory,
+#battery,
+#custom-gpu {
+  color: @blue;
+}
+#custom-gpu {
+  margin-left: 1rem;
+}
+#custom-power {
+  margin-left: 1rem;
   color: @green;
 }
-#custom-power, #custom-reboot, #custom-lock {
-  padding: 0.4rem;
+#battery.warning {
+  animation: batteryWarning 3s linear infinite;
 }
-#custom-power:hover, #custom-lock:hover, #custom-reboot:hover {
-  background: @surface0;
+#battery.urgent {
+  animation: batteryUrgent 3s linear infinite;
 }
-#custom-power:hover {
-  border-radius: 1rem 0 0 1rem;
+window#waybar.battery-critical {
+  background: @red;
 }
-#custom-lock {
-  margin-right: 0;
-}
-#custom-lock:hover {
-  border-radius: 0 1rem 1rem 0;
+#custom-dunst {
+  color: @red;
+  margin-left: 1rem;
 }
 
-#custom-pacman, #systemd-failed-units {
+/* === OTHER ==================================== */
+#custom-music {
+  color: @blue;
+}
+#custom-pacman,
+#systemd-failed-units {
   color: @yellow;
+}
+#custom-pacman {
+  margin-left: 1rem;
+}
+#custom-cpick {
+  color: @red;
+  margin-left: 1rem;
 }

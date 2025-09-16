@@ -1,9 +1,9 @@
 {
   "layer": "bottom",
   "position": "top",
-  "modules-left": ["group/group-power", "custom/sep", "hyprland/window", "custom/sep", "custom/music", "custom/sep", "custom/pacman", "systemd-failed-units"],
+  "modules-left": ["custom/power", "custom/sep", "hyprland/window", "custom/sep", "custom/music", "custom/sep", "tray"],
   "modules-center": ["hyprland/workspaces"],
-  "modules-right": ["tray", "custom/sep", "cpu", "memory", "custom/sep", "network", "pulseaudio", "custom/sep", "clock"],
+  "modules-right": ["systemd-failed-units", "custom/pacman", "custom/sep", "cpu", "memory", "custom/gpu", "custom/sep", "network", "pulseaudio", "custom/dunst", "custom/cpick", "custom/sep", "clock"],
 
   "hyprland/workspaces": {
     "on-scroll-up": "hyprctl dispatch workspace r-1",
@@ -19,9 +19,17 @@
       "default": ""
     }
   },
+  "hyprland/window": {
+    "format": "{title}",
+    "separate-outputs": true,
+    "rewrite": {
+      "nvim .*": "Neovim",
+      ".* Mozilla Firefox": "Firefox"
+    }
+  },
   "custom/music": {
     "format": "  {}",
-    "escape": true,
+    "escape": false,
     "interval": 5,
     "tooltip": false,
     "exec": "playerctl metadata --format='{{ title }} — {{ artist }}'",
@@ -58,27 +66,10 @@
   "memory": {
     "format": " {}%"
   },
-  "group/group-power": {
-    "orientation": "inherit",
-    "drawer": {
-      "transition-duration": 500,
-      "children-class": "group-power-child"
-    },
-    "modules": ["custom/power", "custom/reboot", "custom/lock"]
-  },
   "custom/power": {
     "tooltip": false,
     "format": "",
     "on-click": "shutdown now"
-  },
-  "custom/reboot": {
-    "tooltip": false,
-    "format": ""
-  },
-  "custom/lock": {
-    "tooltip": false,
-    "format": "",
-    "on-click": "hyprlock"
   },
   "custom/sep-group": {
     "tooltip": false,
@@ -86,19 +77,46 @@
   },
   "custom/pacman": {
     "format": "󰮯 {}",
-    "interval": 3600,
+    "interval": 300,
     "exec": "checkupdates | wc -l",
     "exec-if": "exit 0",
-    "onclick": "alacritty -e 'sudo pacman -Syu'; pkill -SIGRTMIN+8 waybar",
+    "on-click": "alacritty -e 'sudo pacman -Syu'; pkill -SIGRTMIN+8 waybar",
     "signal": 8
   },
   "systemd-failed-units": {
     "format": " {nr_failed_system}/{nr_failed_user}",
-    "format-ok": " {nr_failed_system}/{nr_failed_user}",
+    "format-ok": " 0/0",
     "hide_on_ok": false
   },
   "tray": {
     "icon-size": 16,
-    "spacing": 10
+    "spacing": 10,
+    "icons": {
+      "discord": "discord"
+    }
+  },
+  "battery": {
+    "states": {
+      "warning": 40,
+      "urgent": 20,
+      "critical": 10
+    },
+    "format": "{icon} {capacity}%",
+    "format-icons": ["󰁺","󰁻","󰁼","󰁽","󰁾","󰁿","󰂀","󰂁","󰂂"],
+    "tooltip-format": "{timeTo}"
+  },
+  "custom/dunst": {
+    "exec": "~/.config/waybar/scripts/dunst.sh",
+    "on-click": "dunstctl set-paused toggle",
+    "restart-interval": 1
+  },
+  "custom/gpu": {
+    "exec": "nvidia-smi --query-gpu=utilization.gpu,temperature.gpu --format=csv,nounits,noheader | sed 's/\\([0-9]\\+\\), \\([0-9]\\+\\)/\\1%/g'",
+    "format": "󰍹 {}",
+    "interval": 60
+  },
+  "custom/cpick": {
+    "format": "",
+    "on-click": "hyprpicker -arqlf hex"
   }
 }
