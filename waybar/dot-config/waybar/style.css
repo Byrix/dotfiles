@@ -67,10 +67,12 @@
   border-radius: 0;
 }
 #workspaces button:first-child {
-  border-radius: 1rem 0 0 1rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
 }
 #workspaces button:last-child {
-  border-radius: 0 1rem 1rem 0;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 }
 #workspaces button:hover:not(.active) {
   background-color: @surface1;

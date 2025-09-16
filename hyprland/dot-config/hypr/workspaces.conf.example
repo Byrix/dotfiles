@@ -1,0 +1,27 @@
+# # === DESKTOP ===================================
+# # --- Home (default) Workspace --------
+# workspace = 1, defaultName:home, monitor:DP-1, default:true, persistent:true
+#
+# # --- Media Workspace -----------------
+# workspace = 3, defaultName:media, monitor:HDMI-A-1, default:true, persistent:true
+# windowrule = workspace name:media silent, class:(Spotify)
+#
+# # --- Misc Workspace ------------------
+# workspace = 2, defaultName:misc, monitor:DP-2, default:true, persistent:true
+# windowrule = workspace name:misc silent, class:discord
+# windowrule = workspace name:misc silent, class:webcord
+#
+# # --- Games Workspace -----------------
+# # workspace = 9, defaultName:games, monitor:DP-1
+# # windowrule = workpace 9, content:game
+
+
+# === LAPTOP ====================================
+# --- Home Workspace (default) --------
+workspace = 1, defaultName:home, monitor:eDP-1, default:true, persistent:true
+
+# --- Media Workspace -----------------
+workspace = 9, defaultName:media, monitor:eDP-1
+windowrule = workspace name:media silent, class:(Spotify)
+windowrule = workspace name:media silent, class:discord
+
