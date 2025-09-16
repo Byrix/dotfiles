@@ -1,0 +1,9 @@
+#!/bin/bash 
+
+# https://github.com/Alexays/Waybar/wiki/Module:-Custom:-Examples
+
+COUNT=$(dunstctl count waiting)
+ENABLED=󰂚
+DISABLED=󰂛
+if [ $COUNT != 0 ]; then DISABLED="$DISABLED $COUNT"; fi 
+if dunstctl is-paused | grep -q "false"; then echo $ENABLED; else echo $DISABLED; fi
