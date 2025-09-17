@@ -10,21 +10,21 @@
       "action": "systemctl poweroff",
       "text": "Shutdown",
       "keybind": "s",
-      "icon": "./icons/shutdown.svg"
+      "icon": ".config/wleave/icons/shutdown.svg"
     },
     {
       "label": "reboot",
       "action": "systemctl reboot",
       "text": "Reboot",
       "keybind": "r",
-      "icon": "./icons/reboot.svg"
+      "icon": ".config/wleave/icons/reboot.svg"
     },
     {
       "label": "lock",
       "action": "hyprlock",
       "text": "Lock",
       "keybind": "l",
-      "icon": "./icons/lock.svg"
+      "icon": ".config/wleave/icons/lock.svg"
     }
   ]
 }
