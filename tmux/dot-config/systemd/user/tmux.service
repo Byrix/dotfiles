@@ -1,0 +1,12 @@
+[Unit]
+Description=init a tmux session
+
+[Service]
+Type=forking
+; ExecStart=/usr/bin/tmux new -d -s base
+; ExecStop=/usr/bin/tmux kill-session -t %I
+ExecStart=/usr/bin/tmux new-session -d -s byrix
+; ExecStop=/usr/bin/tmux kill-session -t byrix
+
+[Install]
+WantedBy=default.target
