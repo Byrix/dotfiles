@@ -1,7 +1,9 @@
 {
+  "margin": 400,
   "close-on-lost-focus": true,
-  "show-keybinds": true,
-  "css": "./style.css",
+  "show-keybinds": false,
+  "no-version-info": true,
+  "column-spacing": 50,
   "buttons": [
     {
       "label": "shutdown",

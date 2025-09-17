@@ -70,7 +70,7 @@
   "custom/power": {
     "tooltip": false,
     "format": "",
-    "on-click": "shutdown now"
+    "on-click": "wleave"
   },
   "custom/sep-group": {
     "tooltip": false,
