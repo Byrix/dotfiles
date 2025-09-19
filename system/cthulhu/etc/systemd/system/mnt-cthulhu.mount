@@ -1,0 +1,13 @@
+[Unit]
+Description=Mount Cthulhu at boot
+After=network.target
+
+[Mount]
+What=//192.168.1.238/Public
+Where=/mnt/cthulhu
+Options=_netdev,credentials=/etc/samba/credentials/cthulhu,iocharset=utf8,rw,vers=2.0,uid=1000,soft
+Type=cifs
+TimeoutSec=10
+
+[Install]
+WantedBy=multi-user.target
