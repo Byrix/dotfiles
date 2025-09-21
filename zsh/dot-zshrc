@@ -8,7 +8,6 @@ export ZSH="$HOME/.oh-my-zsh"
 
 # OMZ theme
 ZSH_THEME="simple"
-
 # === OPTIONS ===
 ENABLE_CORRECTION="true"  # Command correction prompts
 COMPLETION_WAITING_DOTS="true"  # Awaiting completion dots
@@ -101,7 +100,7 @@ esac
 # }
 
 # --- PSQL connection defaults -------
-export PGHOST='psql.seanbrooker.com'
+# export PGHOST='psql.seanbrooker.com'
 # export PGSSLMODE='verify-full'
 
 # --- ??? ------------------
