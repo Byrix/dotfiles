@@ -107,8 +107,8 @@
   margin-right: 1em;
 }
 #network {
-  color: @red;
-  margin-right: 1rem;
+  color: @blue;
+  margin-left: 1rem;
 }
 #cpu,
 #memory,
@@ -116,6 +116,7 @@
 #custom-gpu {
   color: @blue;
 }
+#battery,
 #custom-gpu {
   margin-left: 1rem;
 }
@@ -126,11 +127,8 @@
 #battery.warning {
   animation: batteryWarning 3s linear infinite;
 }
-#battery.urgent {
+#battery.urgent, #battery.critical {
   animation: batteryUrgent 3s linear infinite;
-}
-window#waybar.battery-critical {
-  background: @red;
 }
 #custom-dunst {
   color: @red;

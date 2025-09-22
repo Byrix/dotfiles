@@ -3,7 +3,7 @@
   "position": "top",
   "modules-left": ["custom/power", "custom/sep", "hyprland/window", "custom/sep", "custom/music", "custom/sep", "tray"],
   "modules-center": ["hyprland/workspaces"],
-  "modules-right": ["systemd-failed-units", "custom/pacman", "custom/sep", "cpu", "memory", "custom/gpu", "custom/sep", "network", "pulseaudio", "custom/dunst", "custom/cpick", "custom/sep", "clock"],
+  "modules-right": ["systemd-failed-units", "custom/pacman", "custom/sep", "cpu", "memory", "custom/gpu", "battery", "network", "custom/sep", "pulseaudio", "custom/dunst", "custom/cpick", "custom/sep", "clock"],
 
   "hyprland/workspaces": {
     "on-scroll-up": "hyprctl dispatch workspace r-1",
