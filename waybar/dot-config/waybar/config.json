@@ -3,7 +3,7 @@
   "position": "top",
   "modules-left": ["custom/power", "custom/sep", "hyprland/window", "custom/sep", "custom/music", "custom/sep", "tray"],
   "modules-center": ["hyprland/workspaces"],
-  "modules-right": ["systemd-failed-units", "custom/pacman", "custom/sep", "cpu", "memory", "custom/gpu", "battery", "network", "custom/sep", "pulseaudio", "custom/dunst", "custom/cpick", "custom/sep", "clock"],
+  "modules-right": ["systemd-failed-units", "custom/pacman", "custom/sep", "cpu", "memory", "custom/gpu", "custom/brightness", "battery", "network", "custom/sep", "pulseaudio", "custom/dunst", "custom/cpick", "custom/sep", "clock"],
 
   "hyprland/workspaces": {
     "on-scroll-up": "hyprctl dispatch workspace r-1",
@@ -98,6 +98,7 @@
   },
   "battery": {
     "states": {
+      "normal": 100,
       "warning": 40,
       "urgent": 20,
       "critical": 10
@@ -119,5 +120,10 @@
   "custom/cpick": {
     "format": "",
     "on-click": "hyprpicker -arqlf hex"
+  },
+  "custom/brightness": {
+    "exec": "~/.config/waybar/scripts/brightness.sh",
+    "interval": 60,
+    "format": "󰃠 {}"
   }
 }

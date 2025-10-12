@@ -113,11 +113,13 @@
 #cpu,
 #memory,
 #battery,
+#custom-brightness,
 #custom-gpu {
   color: @blue;
 }
 #battery,
-#custom-gpu {
+#custom-gpu,
+#custom-brightness {
   margin-left: 1rem;
 }
 #custom-power {
