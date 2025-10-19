@@ -25,7 +25,8 @@
     "separate-outputs": true,
     "rewrite": {
       "nvim .*": "Neovim",
-      ".* Mozilla Firefox": "Firefox"
+      ".* Mozilla Firefox": "Firefox",
+      "(.*) - (.*) - .* Zotero": "Zotero — $1 $2"
     }
   },
   "custom/music": {
